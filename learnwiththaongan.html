@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Learn with Thảo Ngân</title>
+  <style>
+    body {
+      font-family: Courier, monospace;
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      overflow: hidden;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-image: url('https://i.pinimg.com/736x/d9/da/24/d9da24237bc8771c454e6d2957d59ad5.jpg');
+      background-size: cover;
+      background-position: center;
+      filter: blur(2px);
+      z-index: -2;
+    }
+
+    body::after {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: rgba(0, 0, 0, 0.4);
+      z-index: -1;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding-top: 185px;
+      color: pink;
+      text-shadow: 3px 2px 3px black;
+    }
+
+    input, button {
+      padding: 10px;
+      font-size: 18px;
+      font-family: Courier, monospace;
+      margin: 10px;
+      border-radius: 10px;
+      border: none;
+    }
+
+    button {
+      background-color: #9bcd9b;
+      color: dark green;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #2e8b57;
+    }
+
+    #message {
+      font-weight: bold;
+      margin-top: 20px;
+      font-size: 22px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Learn with Thảo Ngân</h1>
+    <p><strong></strong> <span id="vietnamese-word"></span></p>
+
+    <input type="text" id="user-input" placeholder="Write what U remember" autofocus />
+    <button onclick="checkAnswer()">Đúng chưa zị</button>
+
+    <div id="message"></div>
+  </div>
+
+  <!-- Âm thanh -->
+  <audio id="correct-sound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_09b2a7e3f3.mp3?filename=shine-110206.mp3" preload="auto"></audio>
+  <audio id="wrong-sound" src="https://www.soundjay.com/buttons/sounds/button-10.mp3" preload="auto"></audio>
+
+ <script>
+    const vocabulary = [
+      { english: "challenging", vietnamese: "đầy thách thức" },
+      { english: "rewarding", vietnamese: "đáng giá" },
+      { english: "experience", vietnamese: "kinh nghiệm, trải nghiệm" },
+      { english: "enthusiast", vietnamese: "người đam mê" },
+      { english: "fellow", vietnamese: "culinary" },
+      { english: "ability", vietnamese: "khả năng" }
+      { english: "challenging", vietnamese: "đầy thách thức" },
+      { english: "rewarding", vietnamese: "đáng giá" },
+      { english: "experience", vietnamese: "kinh nghiệm, trải nghiệm" },
+      { english: "enthusiast", vietnamese: "người đam mê" },
+      { english: "fellow", vietnamese: "culinary" },
+      { english: "ability", vietnamese: "khả năng" }
+    ];
+
+    let currentIndex = 0;
+
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+
+    shuffle(vocabulary);
+
+    const vietnameseWord = document.getElementById("vietnamese-word");
+    const userInput = document.getElementById("user-input");
+    const message = document.getElementById("message");
+    const correctSound = document.getElementById("correct-sound");
+    const wrongSound = document.getElementById("wrong-sound");
+
+    function showWord() {
+      if (currentIndex < vocabulary.length) {
+        vietnameseWord.textContent = vocabulary[currentIndex].vietnamese;
+        userInput.value = "";
+        message.textContent = "";
+        userInput.focus();
+      } else {
+        message.textContent = `Bà học xong từ ngày hôm nay rùi. Được tận ${vocabulary.length} từ.`;
+        vietnameseWord.textContent = "";
+        userInput.style.display = "none";
+      }
+    }
+
+    function checkAnswer() {
+      const answer = userInput.value.trim().toLowerCase();
+      const correct = vocabulary[currentIndex].english.toLowerCase();
+
+      if (answer === correct) {
+        message.textContent = "Đúng rồi đó!";
+        correctSound.play();
+        currentIndex++;
+        setTimeout(showWord, 750);
+      } else {
+        message.textContent = " Sai rồi gái ơi!";
+        wrongSound.play();
+      }
+    }
+
+    showWord();
+  </script>
+
+</body>
+</html>
